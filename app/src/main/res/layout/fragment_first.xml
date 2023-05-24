@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FirstFragment">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/inputno"
+        android:layout_width="275dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="104dp"
+        android:inputType="number"
+        android:hint="NOK"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewno"
+        android:layout_width="115dp"
+        android:layout_height="81dp"
+        android:layout_marginTop="73dp"
+        android:text="0EUR"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inputno" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/inputeu"
+        android:layout_width="275dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="88dp"
+        android:inputType="number"
+        android:hint="EURO"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewno" />
+
+    <TextView
+        android:id="@+id/textVieweu"
+        android:layout_width="115dp"
+        android:layout_height="81dp"
+        android:layout_marginTop="73dp"
+        android:text="0NOK"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inputeu" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
