@@ -1,3 +1,3 @@
 # NOK-EURO
 
-THis is my personnal offlin conversion app of Norvegian Krone
+This is my personnal offline conversion app of Norvegian Krone
