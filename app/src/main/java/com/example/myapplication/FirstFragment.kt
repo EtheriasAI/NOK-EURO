@@ -27,14 +27,22 @@ class FirstFragment : Fragment() {
     private var noeu = tauxno;
     private var end="EUR";
     private var text="0EUR";
+    private var isEur=false;
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
-        var list = listOf("1","2","3")
-        val adapter = CustomAdapter(list.toTypedArray())
+
+        //load data
+
+        //
+
+        var list = ArrayList<Spent>()
+        list.add(Spent("44","NOK","resto"))
+
+        val adapter = CustomAdapter(list)
         binding.rc.layoutManager = LinearLayoutManager(requireContext())
         binding.rc.adapter = adapter
         binding.inputno.addTextChangedListener {
@@ -49,12 +57,14 @@ class FirstFragment : Fragment() {
         }
         binding.switch1.setOnCheckedChangeListener{ buttonView, checked ->
             if(checked) {
+                isEur=true;
                 noeu = taux
                 end="NOK"
                 text="0NOK"
                 binding.inputno.hint="EUR"
                 binding.inputno.setText("")
             }else if(!checked){
+                isEur=false;
                 noeu = tauxno
                 end="EUR"
                 text="0EUR"
@@ -62,7 +72,18 @@ class FirstFragment : Fragment() {
                 binding.inputno.setText("")
             }
 
-            }
+        }
+        binding.button.setOnClickListener{
+            try {
+                if(isEur)
+                    list.add(Spent(String.format("%.2f", binding.inputno.text.toString().toDouble()),"EUR","see later",))
+                else if(!isEur)
+                    list.add(Spent(String.format("%.2f", binding.inputno.text.toString().toDouble()),"NOK","see later"))
+
+                binding.rc.adapter=CustomAdapter(list)
+            }catch (e: NumberFormatException) {}
+
+        }
         return binding.root
 
     }

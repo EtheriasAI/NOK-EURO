@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class CustomAdapter(private val dataSet: Array<String>) :
+class CustomAdapter(private val dataSet: List<Spent>) :
     RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
     /**
@@ -14,11 +14,15 @@ class CustomAdapter(private val dataSet: Array<String>) :
      * (custom ViewHolder)
      */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val textView: TextView
+        val price: TextView
+        val unity: TextView
+        val reason: TextView
 
         init {
             // Define click listener for the ViewHolder's View
-           textView = view.findViewById(R.id.textView)
+            price = view.findViewById(R.id.price)
+            unity = view.findViewById(R.id.unity)
+            reason = view.findViewById(R.id.reason)
         }
     }
 
@@ -34,9 +38,10 @@ class CustomAdapter(private val dataSet: Array<String>) :
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
 
-        // Get element from your dataset at this position and replace the
-        // contents of the view with that element
-        viewHolder.textView.text = dataSet[position]
+        val item = dataSet[position]
+        viewHolder.price.text = item.price
+        viewHolder.unity.text = item.unity
+        viewHolder.reason.text = item.reason
     }
 
     // Return the size of your dataset (invoked by the layout manager)
