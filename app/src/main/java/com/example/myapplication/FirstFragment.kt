@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.FragmentFirstBinding
 
 
@@ -23,33 +24,49 @@ class FirstFragment : Fragment() {
 
     private var taux=11.81
     private var tauxno=0.085
+    private var noeu = tauxno;
+    private var end="EUR";
+    private var text="0EUR";
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
+        var list = listOf("1","2","3")
+        val adapter = CustomAdapter(list.toTypedArray())
+        binding.rc.layoutManager = LinearLayoutManager(requireContext())
+        binding.rc.adapter = adapter
         binding.inputno.addTextChangedListener {
             var lint = binding.inputno.text.toString();
             try {
-                var value = (lint.toDouble())*tauxno
-                binding.textViewno.text= String.format("%.2f", value).toString()+"EUR";
+                var value = (lint.toDouble())*noeu
+                binding.textViewno.text= String.format("%.2f", value).toString()+end;
             } catch (e: NumberFormatException) {
-                binding.textViewno.text= "OEUR";
+                binding.textViewno.text= text;
             }
 
         }
-        binding.inputeu.addTextChangedListener {
-            var lint = binding.inputeu.text.toString();
-            if(!lint.isEmpty())
-                binding.textVieweu.text= ((lint.toInt())*taux).toString()+"NOK";
-            else
-                binding.textVieweu.text= "0NOK";
-        }
+        binding.switch1.setOnCheckedChangeListener{ buttonView, checked ->
+            if(checked) {
+                noeu = taux
+                end="NOK"
+                text="0NOK"
+                binding.inputno.hint="EUR"
+                binding.inputno.setText("")
+            }else if(!checked){
+                noeu = tauxno
+                end="EUR"
+                text="0EUR"
+                binding.inputno.hint="NOK"
+                binding.inputno.setText("")
+            }
+
+            }
         return binding.root
 
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

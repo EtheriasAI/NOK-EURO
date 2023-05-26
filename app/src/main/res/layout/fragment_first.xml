@@ -28,27 +28,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputno" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/inputeu"
-        android:layout_width="275dp"
-        android:layout_height="57dp"
-        android:layout_marginTop="88dp"
-        android:inputType="number"
-        android:hint="EURO"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewno" />
 
-    <TextView
-        android:id="@+id/textVieweu"
-        android:layout_width="115dp"
-        android:layout_height="81dp"
-        android:layout_marginTop="73dp"
-        android:text="0NOK"
-        android:textSize="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputeu" />
 
     <Switch
         android:id="@+id/switch1"
@@ -60,5 +40,14 @@
         app:layout_constraintHorizontal_bias="0.842"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rc"
+        android:layout_width="412dp"
+        android:layout_height="357dp"
+        android:layout_marginTop="57dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewno" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
