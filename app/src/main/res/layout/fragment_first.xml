@@ -10,18 +10,18 @@
         android:id="@+id/inputno"
         android:layout_width="275dp"
         android:layout_height="57dp"
-        android:layout_marginTop="104dp"
-        android:inputType="number"
+        android:layout_marginTop="56dp"
         android:hint="NOK"
+        android:inputType="numberDecimal|numberSigned"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/switch1" />
 
     <TextView
         android:id="@+id/textViewno"
         android:layout_width="115dp"
         android:layout_height="81dp"
-        android:layout_marginTop="73dp"
+        android:layout_marginTop="36dp"
         android:text="0EUR"
         android:textSize="24dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,5 +49,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputeu" />
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="Switch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.842"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

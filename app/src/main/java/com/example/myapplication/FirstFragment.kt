@@ -1,13 +1,14 @@
 package com.example.myapplication
 
+import android.R.id.input
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.Fragment
 import com.example.myapplication.databinding.FragmentFirstBinding
+
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -31,10 +32,13 @@ class FirstFragment : Fragment() {
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
         binding.inputno.addTextChangedListener {
             var lint = binding.inputno.text.toString();
-            if(!lint.isEmpty())
-                binding.textViewno.text= ((lint.toInt())*tauxno).toString()+"EUR";
-            else
+            try {
+                var value = (lint.toDouble())*tauxno
+                binding.textViewno.text= String.format("%.2f", value).toString()+"EUR";
+            } catch (e: NumberFormatException) {
                 binding.textViewno.text= "OEUR";
+            }
+
         }
         binding.inputeu.addTextChangedListener {
             var lint = binding.inputeu.text.toString();
