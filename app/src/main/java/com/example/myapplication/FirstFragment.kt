@@ -1,7 +1,9 @@
 package com.example.myapplication
 
 import android.R.id.input
+import android.R.id.list
 import android.os.Bundle
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +11,9 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.FragmentFirstBinding
+import java.io.File
+import kotlin.math.log
+import android.util.Log
 
 
 /**
@@ -35,12 +40,7 @@ class FirstFragment : Fragment() {
     ): View? {
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
 
-        //load data
-
-        //
-
-        var list = ArrayList<Spent>()
-        list.add(Spent("44","NOK","resto"))
+        var list = lecture()
 
         val adapter = CustomAdapter(list)
         binding.rc.layoutManager = LinearLayoutManager(requireContext())
@@ -81,11 +81,64 @@ class FirstFragment : Fragment() {
                     list.add(Spent(String.format("%.2f", binding.inputno.text.toString().toDouble()),"NOK","see later"))
 
                 binding.rc.adapter=CustomAdapter(list)
+                ecriture(list)
             }catch (e: NumberFormatException) {}
 
         }
+
         return binding.root
 
+    }
+    private fun ecriture(list:ArrayList<Spent>){
+        val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+        val filePath = File(downloadsDir, "nom_du_fichier.csv").absolutePath
+        val csvContent = StringBuilder()
+        val data: ArrayList<List<String>> = arrayListOf()
+
+        for (e in list) {
+            val personData: List<String> = listOf(e.price, e.unity,e.reason)
+            data.add(personData)
+        }
+
+
+        // Parcours des lignes de données
+        for (row in data) {
+            // Parcours des colonnes de chaque ligne
+            for (column in row) {
+                csvContent.append("\"").append(column.replace("\"", "\"\"")).append("\",")
+            }
+            csvContent.deleteCharAt(csvContent.length - 1) // Supprimer la virgule finale
+            csvContent.append("\n") // Nouvelle ligne
+        }
+
+        // Écriture du contenu CSV dans le fichier
+        try {
+            File(filePath).writeText(csvContent.toString())
+        } catch (e: Exception) {
+            // Gérer les erreurs de sauvegarde
+        }
+    }
+    private fun lecture() :ArrayList<Spent> {
+        var finalval = ArrayList<Spent>()
+        val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+        val filePath = File(downloadsDir, "nom_du_fichier.csv").absolutePath
+
+        try {
+            val csvContent = File(filePath).readText()
+            val rows = csvContent.split("\n")
+
+            for (row in rows) {
+                var column = row.split(",").map { it.replace("\"\"", "\"") }
+                column = column.map { element ->
+                    element.replace("\"", "")
+                }
+                finalval.add(Spent(column.get(0),column.get(1),column.get(2)))
+            }
+
+        } catch (e: Exception) {
+            Log.i("test",e.toString());
+        }
+        return finalval
     }
 
 
