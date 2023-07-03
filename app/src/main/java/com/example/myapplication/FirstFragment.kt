@@ -1,7 +1,12 @@
 package com.example.myapplication
 
-import android.R.id.input
-import android.R.id.list
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
+import com.github.kittinunf.fuel.httpGet
+import com.github.kittinunf.result.Result
+import org.json.JSONObject
 import android.os.Bundle
 import android.os.Environment
 import android.view.LayoutInflater
@@ -12,8 +17,12 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.FragmentFirstBinding
 import java.io.File
-import kotlin.math.log
 import android.util.Log
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 
 /**
@@ -23,11 +32,9 @@ class FirstFragment : Fragment() {
 
     private var _binding: FragmentFirstBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
-    private var taux=11.81
+    private var taux=11.69
     private var tauxno=0.085
     private var noeu = tauxno;
     private var end="EUR";
@@ -40,6 +47,11 @@ class FirstFragment : Fragment() {
     ): View? {
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
 
+        if(hasInternetConnection(requireContext())){
+            taux=getRate()
+            tauxno=1/taux
+        }
+        Log.i("testInter",taux.toString())
         var list = lecture()
 
         val adapter = CustomAdapter(list)
@@ -141,6 +153,51 @@ class FirstFragment : Fragment() {
         return finalval
     }
 
+    private fun getRate(): Double = runBlocking {
+        val url = "https://data.norges-bank.no/api/data/EXR/B.EUR.NOK.SP?format=sdmx-json&lastNObservations=1&locale=en" // Remplacez par l'URL de votre API
+        var rate: Double = 0.0
+
+        GlobalScope.launch(Dispatchers.IO) {
+            val (_, response, result) = url.httpGet().responseString()
+            when (result) {
+                is Result.Success -> {
+                    val jsonData = result.get()
+                    val jsonObject = JSONObject(jsonData)
+
+                    val observation = jsonObject.getJSONObject("data")
+                        .getJSONArray("dataSets")
+                        .getJSONObject(0)
+                        .getJSONObject("series")
+                        .getJSONObject("0:0:0:0")
+                        .getJSONObject("observations")
+                        .getJSONArray("0")[0]
+
+                    rate = observation.toString().toDouble()
+                }
+                is Result.Failure -> {}
+            }
+        }
+
+        // Attendre la fin de la requête et retourner la valeur
+        delay(1000) // Optionnel : attendre un certain temps pour laisser la requête se terminer
+        rate
+    }
+
+    private fun hasInternetConnection(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val network = connectivityManager.activeNetwork ?: return false
+            val networkCapabilities =
+                connectivityManager.getNetworkCapabilities(network) ?: return false
+
+            return networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+        } else {
+            val networkInfo = connectivityManager.activeNetworkInfo ?: return false
+            return networkInfo.isConnected
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
