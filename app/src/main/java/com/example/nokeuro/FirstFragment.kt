@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.nokeuro
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -15,7 +15,7 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapplication.databinding.FragmentFirstBinding
+import com.example.nokeuro.databinding.FragmentFirstBinding
 import java.io.File
 import android.util.Log
 import kotlinx.coroutines.Dispatchers

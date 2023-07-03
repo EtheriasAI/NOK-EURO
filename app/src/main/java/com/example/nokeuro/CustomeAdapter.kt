@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.nokeuro;
 
 import android.view.LayoutInflater
 import android.view.View
