@@ -46,12 +46,18 @@ class FirstFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
+        val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
 
         if(hasInternetConnection(requireContext())){
             taux=getRate()
             tauxno=1/taux
+            val filePath = File(downloadsDir, "taux.txt").absolutePath
+            File(filePath).writeText(taux.toString())
+        }else{
+            val filePath = File(downloadsDir, "taux.txt").absolutePath
+            taux = File(filePath).readText().toDouble()
+            taux=1/taux
         }
-        Log.i("testInter",taux.toString())
         var list = lecture()
 
         val adapter = CustomAdapter(list)
@@ -201,7 +207,6 @@ class FirstFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
     }
 
     override fun onDestroyView() {
